@@ -33,10 +33,17 @@ Scores live in `localStorage` under one key (`ccp:progress:v1`). No accounts, no
 calls, no analytics.
 
 Stored per mode: last and best score, the IDs of questions you missed (so "Practice my
-missed" survives a restart), and the last 20 attempts. **Export my progress** in the footer
-downloads it as JSON if you want a backup before switching devices.
+missed" survives a restart), and the last 20 attempts.
 
-Clearing site data deletes everything.
+The footer on both pages has three controls:
+
+- **Export my progress** — downloads a JSON backup.
+- **Import a backup** — restores a backup (validated and normalised on the way in).
+- **Reset all my data** — after a confirmation, deletes every score, best result,
+  missed-question list and attempt history on this device. The current screen updates
+  immediately.
+
+Clearing site data in the browser also deletes everything.
 
 ## Tech
 

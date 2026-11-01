@@ -59,6 +59,94 @@ function saveStore(store) {
   }
 }
 
+/** Wipe all saved progress for this site. Returns true when the data is gone. */
+function clearStore() {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    // Anything else this app may have written under its own prefix.
+    Object.keys(localStorage)
+      .filter((k) => k.startsWith('ccp:'))
+      .forEach((k) => localStorage.removeItem(k));
+    return true;
+  } catch (err) {
+    console.warn('Could not clear stored progress.', err);
+    return false;
+  }
+}
+
+/** Download the saved progress as JSON. */
+function exportStore() {
+  const raw = localStorage.getItem(STORAGE_KEY) || JSON.stringify(defaultStore());
+  const blob = new Blob([raw], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `aws-ccp-progress-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+}
+
+/** Replace saved progress from a JSON file the user picked. */
+function importStore(file) {
+  return file
+    .text()
+    .then((text) => {
+      const parsed = JSON.parse(text);
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        throw new Error('That file is not an AWS CCP Practice backup.');
+      }
+      const normalised = {
+        version: 1,
+        sets: parsed.sets && typeof parsed.sets === 'object' ? parsed.sets : {},
+        mock: parsed.mock && typeof parsed.mock === 'object' ? parsed.mock : {},
+        history: Array.isArray(parsed.history) ? parsed.history.slice(0, HISTORY_LIMIT) : [],
+        missed: parsed.missed && typeof parsed.missed === 'object' ? parsed.missed : {},
+      };
+      const ok = saveStore(normalised);
+      if (!ok) throw new Error('Could not write to storage.');
+      return true;
+    })
+    .catch((err) => {
+      throw err instanceof SyntaxError ? new Error('That file is not valid JSON.') : err;
+    });
+}
+
+/**
+ * Confirm + perform a full reset, then repaint the current screen so badges and
+ * counters clear immediately.
+ */
+async function resetAllData() {
+  const hasData = !!localStorage.getItem(STORAGE_KEY);
+  const ok = await askConfirm({
+    title: 'Reset all saved data?',
+    body: hasData
+      ? 'This deletes every score, best result, missed-question list and attempt history on this device. It cannot be undone. Export a backup first if you want to keep it.'
+      : 'There is no saved progress to delete on this device. Your settings for this session will still be cleared.',
+    confirmText: 'Reset everything',
+    cancelText: 'Cancel',
+  });
+  if (!ok) return false;
+
+  const cleared = clearStore();
+  if (!cleared) {
+    await askConfirm({
+      title: 'Could not reset',
+      body: 'Your browser blocked access to local storage, so nothing was deleted.',
+      confirmText: 'OK',
+      cancelText: 'Close',
+    });
+    return false;
+  }
+
+  // Refresh whichever screen is showing.
+  document.body.classList.remove('is-exam');
+  session = null;
+  if (document.body.dataset.page === 'sets') renderSets();
+  else renderHome();
+  return true;
+}
+
 function recordAttempt({ mode, setName, score, total, seconds, missedIds }) {
   const store = loadStore();
   const bucketKey = mode === 'mock' ? 'mock' : String(setName);
@@ -552,6 +640,70 @@ function practiceMissed(data) {
   startExam({ mode: 'missed', questions: qs, setName: data.setName, title: 'Practice missed questions', shuffleOn: false });
 }
 
+/* ------------------------------------------------------------ data controls */
+
+/**
+ * Build the Export / Import / Reset controls into any `.data-controls` element.
+ * Kept in app.js (not inline in the two pages) so both pages stay in sync and the
+ * reset can reuse the accessible in-page dialog.
+ */
+function mountDataControls() {
+  document.querySelectorAll('[data-data-controls]').forEach((host) => {
+    if (host.dataset.mounted === 'true') return;
+    host.dataset.mounted = 'true';
+    host.textContent = '';
+
+    const fileInput = el('input', {
+      type: 'file',
+      accept: 'application/json,.json',
+      class: 'hide',
+      onchange: async (e) => {
+        const file = e.target.files && e.target.files[0];
+        e.target.value = '';
+        if (!file) return;
+        try {
+          await importStore(file);
+          await askConfirm({
+            title: 'Backup restored',
+            body: 'Your saved progress has been imported.',
+            confirmText: 'OK',
+            cancelText: 'Close',
+          });
+          if (document.body.dataset.page === 'sets') renderSets();
+          else renderHome();
+        } catch (err) {
+          await askConfirm({
+            title: 'Import failed',
+            body: err.message || 'That file could not be imported.',
+            confirmText: 'OK',
+            cancelText: 'Close',
+          });
+        }
+      },
+    });
+
+    host.append(
+      el('div', { class: 'data-controls-row' },
+        el('button', {
+          class: 'btn-link', type: 'button', text: 'Export my progress',
+          onclick: () => exportStore(),
+        }),
+        el('span', { class: 'sep', 'aria-hidden': 'true', text: '·' }),
+        el('button', {
+          class: 'btn-link', type: 'button', text: 'Import a backup',
+          onclick: () => fileInput.click(),
+        }),
+        el('span', { class: 'sep', 'aria-hidden': 'true', text: '·' }),
+        el('button', {
+          class: 'btn-link btn-link-danger', type: 'button', text: 'Reset all my data',
+          onclick: () => resetAllData(),
+        })
+      ),
+      fileInput
+    );
+  });
+}
+
 /* ------------------------------------------------------------------ shell */
 
 /* Reserved for per-page header state; navigation highlighting is static in the HTML. */
@@ -709,6 +861,8 @@ async function boot() {
 
   if (page === 'sets') renderSets();
   else renderHome();
+
+  mountDataControls();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

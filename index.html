@@ -37,22 +37,11 @@
       (MIT licensed).
     </p>
     <p>Not affiliated with, endorsed by, or authorised by Amazon. AWS and all AWS service names are trademarks of Amazon.com, Inc.</p>
-    <p>Scores are stored in this browser only. Clearing site data erases them.</p>
-    <p><button class="btn btn-ghost" type="button" id="export-btn" style="min-height:0;padding:.25rem 0">Export my progress</button></p>
+    <p>Scores are stored in this browser only. Nothing is uploaded.</p>
+    <div class="data-controls" data-data-controls></div>
   </div>
 </footer>
 
 <script src="app.js"></script>
-<script>
-  document.getElementById('export-btn').addEventListener('click', () => {
-    const raw = localStorage.getItem('ccp:progress:v1') || '{}';
-    const blob = new Blob([raw], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'aws-ccp-progress.json';
-    a.click();
-    URL.revokeObjectURL(a.href);
-  });
-</script>
 </body>
 </html>
