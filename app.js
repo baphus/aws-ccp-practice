@@ -125,6 +125,7 @@ async function resetAllData() {
       : 'There is no saved progress to delete on this device. Your settings for this session will still be cleared.',
     confirmText: 'Reset everything',
     cancelText: 'Cancel',
+    destructive: true,
   });
   if (!ok) return false;
 
@@ -431,7 +432,7 @@ function onSheetKey(e) {
  * In-page confirmation dialog. window.confirm() is deliberately avoided: it blocks
  * rendering, cannot be styled, and behaves inconsistently in installed PWAs.
  */
-function askConfirm({ title, body, confirmText = 'Continue', cancelText = 'Cancel' }) {
+function askConfirm({ title, body, confirmText = 'Continue', cancelText = 'Cancel', destructive = false }) {
   return new Promise((resolve) => {
     const prevFocus = document.activeElement;
 
@@ -457,10 +458,11 @@ function askConfirm({ title, body, confirmText = 'Continue', cancelText = 'Cance
     dialog.append(
       el('h2', { id: 'confirm-title', text: title }),
       el('p', { id: 'confirm-body', class: 'toggle-label', text: body, style: 'margin:0 0 1rem' }),
-      el('div', { class: 'btn-row', style: 'margin-top:0' },
+      el('div', { class: 'btn-row', style: 'margin-top:0; justify-content:flex-end' },
         el('button', { class: 'btn', type: 'button', text: cancelText, onclick: () => close(false) }),
         el('button', {
-          class: 'btn btn-primary',
+          // Cloudscape: one primary per page, and destructive actions are not it.
+          class: destructive ? 'btn btn-danger' : 'btn btn-primary',
           type: 'button',
           text: confirmText,
           onclick: () => close(true),
@@ -469,7 +471,8 @@ function askConfirm({ title, body, confirmText = 'Continue', cancelText = 'Cance
 
     const overlay = el('div', { class: 'sheet-backdrop', onclick: (e) => { if (e.target === overlay) close(false); } }, dialog);
     document.body.append(overlay);
-    dialog.querySelector('.btn-row .btn:last-child').focus();
+    // Focus the safe action first so Enter never triggers a destructive default.
+    dialog.querySelector('.btn-row .btn').focus();
     document.addEventListener('keydown', onKey);
   });
 }
@@ -499,6 +502,7 @@ async function abandon() {
     body: 'Your answers will be lost and nothing will be saved.',
     confirmText: 'Abandon',
     cancelText: 'Keep going',
+    destructive: true,
   });
   if (!ok) return;
   clearInterval(session.timerId);
@@ -704,6 +708,87 @@ function mountDataControls() {
   });
 }
 
+/* ------------------------------------------------------------ attribution */
+
+const CREDIT_HIDDEN_KEY = 'ccp:credit-hidden';
+
+/**
+ * Subtle bottom-left "Made by Sephus" floater.
+ * Collapsed by default; clicking expands to reveal the portfolio link and a
+ * Hide control. Hiding is remembered on this device. Annotation only: it must
+ * never sit above the exam's sticky action bar or trap keyboard focus.
+ */
+function mountCredit() {
+  if (document.getElementById('credit')) return;
+
+  let hidden = false;
+  try {
+    hidden = localStorage.getItem(CREDIT_HIDDEN_KEY) === '1';
+  } catch {
+    /* storage blocked; just show it */
+  }
+  if (hidden) return;
+
+  const panel = el('div', { class: 'credit-panel is-collapsed' },
+    el('p', { class: 'credit-text' },
+      document.createTextNode('Made by '),
+      el('a', {
+        href: 'https://www.sephus.tech/',
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        text: 'Sephus',
+      }),
+    ),
+    el('div', { class: 'credit-actions' },
+      el('a', {
+        class: 'credit-link',
+        href: 'https://www.sephus.tech/',
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        text: 'View portfolio',
+      }),
+      el('button', {
+        class: 'credit-hide',
+        type: 'button',
+        text: 'Hide',
+        onclick: () => hideCredit(),
+      }),
+    ),
+  );
+
+  const toggle = el('button', {
+    class: 'credit-toggle',
+    type: 'button',
+    'aria-expanded': 'false',
+    'aria-controls': 'credit-panel',
+    onclick: () => setExpanded(!panel.classList.contains('is-open')),
+  },
+    el('span', { class: 'credit-dot', 'aria-hidden': 'true' }),
+    el('span', { text: 'Made by Sephus' }),
+  );
+
+  panel.id = 'credit-panel';
+
+  const root = el('div', { class: 'credit', id: 'credit' }, panel, toggle);
+  document.body.append(root);
+
+  function setExpanded(open) {
+    panel.classList.toggle('is-open', open);
+    panel.classList.toggle('is-collapsed', !open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    root.classList.toggle('is-open', open);
+  }
+}
+
+function hideCredit() {
+  try {
+    localStorage.setItem(CREDIT_HIDDEN_KEY, '1');
+  } catch {
+    /* best effort */
+  }
+  document.getElementById('credit')?.remove();
+}
+
 /* ------------------------------------------------------------------ shell */
 
 /* Reserved for per-page header state; navigation highlighting is static in the HTML. */
@@ -721,31 +806,142 @@ function renderHome() {
     el('p', { class: 'lede', text: `Random questions drawn from all ${EXAMS.totalQuestions.toLocaleString()} practice questions (${EXAMS.uniqueQuestions.toLocaleString()} unique).` })
   );
 
-  /* length picker */
+  /* Length picker — Cloudscape segmented control plus a custom amount.
+     Presets stay one tap away; "Custom" reveals a number field. */
+  const MAX_Q = UNIQUE.length;
   const lengths = [10, 25, 50, 65];
   let chosenLength = 65;
-  const chipRow = el('div', { class: 'chip-row' });
-  const chips = lengths.map((n) => {
-    const b = el('button', {
-      class: 'chip', type: 'button', 'aria-pressed': n === chosenLength ? 'true' : 'false', text: String(n),
-      onclick: () => {
-        chosenLength = n;
-        chips.forEach((c) => c.setAttribute('aria-pressed', c === b ? 'true' : 'false'));
-      },
-    });
-    chipRow.append(b);
-    return b;
-  });
-  chipRow.append(el('button', {
-    class: 'chip', type: 'button', 'aria-pressed': 'false', text: `All (${EXAMS.uniqueQuestions})`,
-    onclick: () => {
-      chosenLength = EXAMS.uniqueQuestions;
-      chips.forEach((c) => c.setAttribute('aria-pressed', 'false'));
-      chipRow.lastChild.setAttribute('aria-pressed', 'true');
-    },
-  }));
 
-  const lengthField = el('fieldset', {}, el('legend', { text: 'How many questions?' }), chipRow);
+  const seg = el('div', { class: 'segmented', role: 'group', 'aria-label': 'How many questions' });
+  const segButtons = [];
+
+  const setPressed = (activeEl) => {
+    segButtons.forEach((b) => b.setAttribute('aria-pressed', b === activeEl ? 'true' : 'false'));
+  };
+
+  /* Custom number field (hidden until "Custom" is chosen).
+     Deliberately NOT type=number: the browser silently clamps out-of-range values to
+     max, so "5000" would arrive as "972" and pass validation unnoticed. A text input
+     with inputmode=numeric keeps the numeric keypad but lets us validate the real input. */
+  const customInput = el('input', {
+    type: 'text',
+    id: 'custom-count',
+    class: 'input',
+    inputmode: 'numeric',
+    pattern: '[0-9]*',
+    autocomplete: 'off',
+    maxlength: String(String(MAX_Q).length + 1),
+    value: String(chosenLength),
+    'aria-describedby': 'custom-count-help',
+  });
+
+  const customHelp = el('span', {
+    id: 'custom-count-help',
+    class: 'field-hint',
+    text: `Enter a number from 1 to ${MAX_Q.toLocaleString()}.`,
+  });
+
+  const customError = el('span', { class: 'field-error', role: 'alert', 'aria-live': 'polite' });
+
+  const customWrap = el('div', { class: 'custom-count hide' },
+    el('label', { class: 'field-label', for: 'custom-count', text: 'Number of questions' }),
+    customInput,
+    customHelp,
+    customError,
+  );
+
+  /** Parse and clamp the custom value. Returns null when invalid. */
+  const readCustom = () => {
+    const raw = String(customInput.value).trim();
+    if (raw === '') return null;
+    const n = Number(raw);
+    if (!Number.isFinite(n) || !Number.isInteger(n)) return null;
+    if (n < 1 || n > MAX_Q) return null;
+    return n;
+  };
+
+  const validateCustom = () => {
+    const raw = String(customInput.value).trim();
+    const n = Number(raw);
+    // Note: do not rely on the browser's own clamping of type=number, and treat an
+    // empty field, a fraction, or an out-of-range number as a field error.
+    if (raw === '' || !Number.isFinite(n)) {
+      customError.textContent = 'Enter a number of questions.';
+      customInput.setAttribute('aria-invalid', 'true');
+      return false;
+    }
+    if (!Number.isInteger(n) || n < 1 || n > MAX_Q) {
+      customError.textContent = `Enter a whole number between 1 and ${MAX_Q.toLocaleString()}.`;
+      customInput.setAttribute('aria-invalid', 'true');
+      return false;
+    }
+    customError.textContent = '';
+    customInput.removeAttribute('aria-invalid');
+    return true;
+  };
+
+  const choosePreset = (n, btn) => {
+    chosenLength = n;
+    setPressed(btn);
+    customWrap.classList.add('hide');
+    customInput.value = String(n);
+    customError.textContent = '';
+    customInput.removeAttribute('aria-invalid');
+  };
+
+  for (const n of lengths) {
+    const b = el('button', {
+      type: 'button',
+      'aria-pressed': n === chosenLength ? 'true' : 'false',
+      text: String(n),
+      onclick: () => choosePreset(n, b),
+    });
+    segButtons.push(b);
+    seg.append(b);
+  }
+
+  const customBtn = el('button', {
+    type: 'button',
+    'aria-pressed': 'false',
+    text: 'Custom',
+    'aria-controls': 'custom-count',
+    'aria-expanded': 'false',
+    onclick: () => {
+      setPressed(customBtn);
+      customBtn.setAttribute('aria-expanded', 'true');
+      customWrap.classList.remove('hide');
+      customInput.focus();
+      customInput.select();
+    },
+  });
+  segButtons.push(customBtn);
+  seg.append(customBtn);
+
+  const allChip = el('button', {
+    type: 'button',
+    'aria-pressed': 'false',
+    text: `All (${MAX_Q.toLocaleString()})`,
+    onclick: () => choosePreset(MAX_Q, allChip),
+  });
+  segButtons.push(allChip);
+  seg.append(allChip);
+
+  customInput.addEventListener('input', () => {
+    // Keep the field to digits so validation reports range problems, not typos.
+    const digits = customInput.value.replace(/[^\d]/g, '');
+    if (digits !== customInput.value) customInput.value = digits;
+    // Typing in the field switches the selection to Custom.
+    setPressed(customBtn);
+    const ok = validateCustom();
+    if (ok) chosenLength = readCustom();
+  });
+  customInput.addEventListener('blur', validateCustom);
+
+  const lengthField = el('fieldset', {},
+    el('span', { class: 'field-label', text: 'How many questions?' }),
+    seg,
+    customWrap,
+  );
   root.append(lengthField);
 
   /* shuffle toggle */
@@ -770,7 +966,15 @@ function renderHome() {
       type: 'button',
       text: 'Start mock exam',
       onclick: () => {
-        const n = Math.min(chosenLength, UNIQUE.length);
+        // Re-validate at the point of action rather than only disabling the button.
+        // Cloudscape guidance: validate the field, don't disable the primary action.
+        if (!customWrap.classList.contains('hide')) {
+          if (!validateCustom()) {
+            customInput.focus();
+            return;
+          }
+        }
+        const n = Math.min(chosenLength || 1, MAX_Q);
         const picked = shuffle(UNIQUE).slice(0, n);
         startExam({ mode: 'mock', questions: picked, setName: null, title: `Mock Exam · ${n} questions`, shuffleOn: shuffleInput.checked });
       },
@@ -863,6 +1067,7 @@ async function boot() {
   else renderHome();
 
   mountDataControls();
+  mountCredit();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

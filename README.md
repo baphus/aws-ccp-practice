@@ -10,8 +10,8 @@ Live: https://baphus.github.io/aws-ccp-practice/
 
 Two ways to study:
 
-- **Mock Exam** (`index.html`) — pick 10 / 25 / 50 / 65 / all questions. Questions are
-  drawn at random from the whole bank, so every mock is different.
+- **Mock Exam** (`index.html`) — pick 10 / 25 / 50 / 65, any **custom amount** from 1 to the
+  full bank, or all of it. Questions are drawn at random, so every mock is different.
 - **Practice Sets** (`sets.html`) — the 23 published exam sets in their original order,
   each with your last and best score.
 
@@ -49,6 +49,23 @@ Clearing site data in the browser also deletes everything.
 
 Plain HTML, CSS and vanilla JavaScript. No framework, no bundler, no build step, no runtime
 dependencies. The deployed site is exactly the files in this repo.
+
+### Design system
+
+The interface follows the [AWS Cloudscape](https://cloudscape.design/) design system visual
+foundation. We do not ship Cloudscape's React component library — the components here are
+custom DOM — but they follow its specs and tokens:
+
+- `style.css` opens with CSS custom properties mirroring Cloudscape's CTI token names
+  (`--color-background-button-primary-default`, `--border-radius-container`, …). Values are
+  copied from the official `@cloudscape-design/design-tokens` package, not eyeballed.
+  **Reference the variables; never hard-code hex values in component styles.**
+- Blue is the primary colour (`#006ce0` light / `#42b4ff` dark). AWS orange appears only in
+  the logo mark, never as an action colour.
+- Pill buttons (20px radius), 16px containers, 8px inputs, 14px Open Sans body text.
+- One primary action per page. Destructive confirmations use a normal button with danger
+  styling rather than the primary variant.
+- Full light and dark parity via `prefers-color-scheme`, using Cloudscape's paired values.
 
 | File | Purpose |
 | --- | --- |
@@ -94,8 +111,10 @@ option.
 ## Tests
 
 ```bash
-node tools/test-logic.mjs   # scoring rules, data integrity, debris checks
-node tools/audit.mjs        # spot-checks parsed answers against the raw Markdown
+node tools/test-logic.mjs        # scoring rules, data integrity, debris checks
+node tools/test-custom-count.mjs # custom question-count parsing and range validation
+node tools/test-credit.mjs       # credit floater toggle state machine
+node tools/audit.mjs             # spot-checks parsed answers against the raw Markdown
 ```
 
 ## Local preview

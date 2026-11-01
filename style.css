@@ -1,256 +1,709 @@
 /* ============================================================================
-   AWS CCP Practice — styles. Accessible-minimal, mobile-first, one column.
+   AWS CCP Practice — styles
+
+   Built on the AWS Cloudscape design system visual foundation.
+   https://cloudscape.design/foundation/visual-foundation/
+
+   Custom properties below mirror Cloudscape CTI token names
+   (Category > Type > Item > State), and their values are copied from the official
+   @cloudscape-design/design-tokens package (index-visual-refresh.json) rather than
+   eyeballed. Reference the variables below in component styles; never write raw
+   hex values inline.
+
+   We are not loading Cloudscape's React component library — this is vanilla DOM —
+   so the components here are custom, but they follow Cloudscape's visual specs:
+   pill buttons (radius 20px), 16px containers, 8px inputs, 14px Open Sans body,
+   blue primary actions, and strict light/dark parity.
    ========================================================================== */
 
 :root {
-  --accent: #ff9900;
-  --accent-ink: #1a1000;
-  --bg: #fbfbfa;
-  --surface: #ffffff;
-  --surface-2: #f2f2f0;
-  --ink: #17181a;
-  --ink-2: #5a5d63;
-  --line: #e2e2df;
-  --ok: #147a4b;
-  --bad: #c0392b;
-  --warn: #a63b00;
-  --radius: 12px;
-  --tap: 48px;
-  --maxw: 720px;
   color-scheme: light dark;
+
+  /* --- Typography ------------------------------------------------------- */
+  --font-family-base: 'Open Sans', 'Helvetica Neue', Roboto, Arial, sans-serif;
+  --font-family-monospace: Monaco, Menlo, Consolas, 'Courier Prime', Courier, monospace;
+
+  --font-size-body-s: 12px;
+  --font-size-body-m: 14px;
+  --font-size-heading-xs: 14px;
+  --font-size-heading-s: 16px;
+  --font-size-heading-m: 18px;
+  --font-size-heading-l: 20px;
+  --font-size-heading-xl: 24px;
+  --font-size-display-l: 42px;
+
+  --line-height-body-m: 20px;
+  --line-height-heading-l: 24px;
+
+  --font-weight-bold: 700;
+  --font-weight-normal: 400;
+
+  /* --- Border radii ----------------------------------------------------- */
+  --border-radius-container: 16px;
+  --border-radius-button: 20px;
+  --border-radius-input: 8px;
+  --border-radius-badge: 4px;
+  --border-radius-item: 8px;
+
+  --border-width-button: 2px;
+  --border-width-field: 1px;
+
+  /* --- Spacing (Cloudscape "comfortable" density) ----------------------- */
+  --space-xxxs: 2px;
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-s: 12px;
+  --space-m: 16px;
+  --space-l: 20px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+  --space-xxxl: 40px;
+
+  --space-container-horizontal: 20px;
+  --space-button-horizontal: 20px;
+  --space-card-horizontal: 20px;
+  --space-card-vertical: 16px;
+
+  /* --- Colour: light mode ----------------------------------------------- */
+  --color-background-layout-main: #ffffff;
+  --color-background-container-content: #ffffff;
+  --color-background-container-header: #ffffff;
+  --color-background-input-default: #ffffff;
+  --color-background-control-default: #ffffff;
+  --color-background-button-normal-default: #ffffff;
+  --color-background-button-normal-hover: #f0fbff;
+  --color-background-button-primary-default: #006ce0;
+  --color-background-button-primary-hover: #002b66;
+  --color-background-button-primary-active: #002b66;
+  --color-background-item-selected: #f0fbff;
+  --color-background-status-success: #effff1;
+  --color-background-status-error: #fff5f5;
+  --color-background-status-warning: #fffcef;
+  --color-background-status-info: #f0fbff;
+
+  --color-border-divider-default: #c6c6cd;
+  --color-border-input-default: #8c8c94;
+  --color-border-input-focused: #006ce0;
+  --color-border-item-focused: #006ce0;
+  --color-border-item-selected: #006ce0;
+  --color-border-button-normal-default: #006ce0;
+  --color-border-status-success: #00802f;
+  --color-border-status-error: #db0000;
+  --color-border-status-warning: #855900;
+
+  --color-text-body-default: #0f141a;
+  --color-text-body-secondary: #424650;
+  --color-text-heading-default: #0f141a;
+  --color-text-label: #0f141a;
+  --color-text-interactive-default: #424650;
+  --color-text-interactive-hover: #0f141a;
+  --color-text-accent: #006ce0;
+  --color-text-button-primary-default: #ffffff;
+  --color-text-button-normal-default: #006ce0;
+  --color-text-status-success: #00802f;
+  --color-text-status-error: #db0000;
+  --color-text-status-warning: #855900;
+  --color-text-status-info: #006ce0;
+
+  --color-background-control-checked: #006ce0;
+  --color-foreground-control-default: #ffffff;
+
+  --color-shadow-default: rgba(0, 7, 22, 0.12);
+  --color-shadow-scrim: rgba(0, 7, 22, 0.5);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #131416;
-    --surface: #1c1e21;
-    --surface-2: #25282c;
-    --ink: #f0f1f3;
-    --ink-2: #a2a7ae;
-    --line: #33373c;
-    --ok: #4ade80;
-    --bad: #f87171;
-    --warn: #fdba74;
-    --accent-ink: #1a1000;
+    --color-background-layout-main: #161d26;
+    --color-background-container-content: #161d26;
+    --color-background-container-header: #161d26;
+    --color-background-input-default: #161d26;
+    --color-background-control-default: #161d26;
+    --color-background-button-normal-default: #161d26;
+    --color-background-button-normal-hover: #1b232d;
+    --color-background-button-primary-default: #42b4ff;
+    --color-background-button-primary-hover: #75cfff;
+    --color-background-button-primary-active: #42b4ff;
+    --color-background-item-selected: #001129;
+    --color-background-status-success: #001401;
+    --color-background-status-error: #1f0000;
+    --color-background-status-warning: #1f1200;
+    --color-background-status-info: #001129;
+
+    --color-border-divider-default: #424650;
+    --color-border-input-default: #656871;
+    --color-border-input-focused: #42b4ff;
+    --color-border-item-focused: #42b4ff;
+    --color-border-item-selected: #42b4ff;
+    --color-border-button-normal-default: #42b4ff;
+    --color-border-status-success: #2bb534;
+    --color-border-status-error: #ff7a7a;
+    --color-border-status-warning: #fbd332;
+
+    --color-text-body-default: #c6c6cd;
+    --color-text-body-secondary: #c6c6cd;
+    --color-text-heading-default: #ebebf0;
+    --color-text-label: #dedee3;
+    --color-text-interactive-default: #dedee3;
+    --color-text-interactive-hover: #f9f9fa;
+    --color-text-accent: #42b4ff;
+    --color-text-button-primary-default: #0f141a;
+    --color-text-button-normal-default: #42b4ff;
+    --color-text-status-success: #2bb534;
+    --color-text-status-error: #ff7a7a;
+    --color-text-status-warning: #fbd332;
+    --color-text-status-info: #42b4ff;
+
+    --color-background-control-checked: #42b4ff;
+    --color-foreground-control-default: #161d26;
+
+    --color-shadow-default: rgba(0, 0, 0, 0.4);
+    --color-shadow-scrim: rgba(0, 0, 0, 0.6);
   }
 }
 
-* { box-sizing: border-box; }
+/* ------------------------------------------------------------------ base */
 
-html { -webkit-text-size-adjust: 100%; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 1rem;
-  line-height: 1.55;
+  background: var(--color-background-layout-main);
+  color: var(--color-text-body-default);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-m);
+  line-height: var(--line-height-body-m);
   padding-bottom: env(safe-area-inset-bottom);
+  -webkit-font-smoothing: antialiased;
 }
 
 .wrap {
-  max-width: var(--maxw);
+  max-width: 760px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 var(--space-container-horizontal);
 }
 
-/* ------------------------------------------------------------------ header */
+/* ------------------------------------------------------------ typography */
 
+h1 {
+  font-size: var(--font-size-heading-xl);
+  line-height: 1.3;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-heading-default);
+  letter-spacing: normal;
+  margin: 0 0 var(--space-xs);
+}
+
+h2 {
+  font-size: var(--font-size-heading-l);
+  line-height: var(--line-height-heading-l);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-heading-default);
+  margin: var(--space-xl) 0 var(--space-s);
+}
+
+p {
+  margin: 0 0 var(--space-s);
+}
+
+.lede {
+  color: var(--color-text-body-secondary);
+  margin: 0 0 var(--space-l);
+}
+
+/* --------------------------------------------------------------- header */
+
+/* Cloudscape "home header" band: always dark, regardless of mode. */
 .site-header {
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
+  background: #0f141a;
   position: sticky;
   top: 0;
   z-index: 20;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .site-header .wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: var(--space-s);
   min-height: 56px;
+  flex-wrap: wrap;
+  padding-top: var(--space-xs);
+  padding-bottom: var(--space-xs);
 }
 
 .brand {
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.brand .dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex: none;
-}
-
-.nav { display: flex; gap: 0.25rem; }
-
-.nav a {
-  color: var(--ink-2);
+  gap: var(--space-xs);
+  color: #ffffff;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-heading-xs);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.5rem 0.7rem;
-  border-radius: 8px;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.brand:focus-visible {
+  outline: 2px solid #42b4ff;
+  outline-offset: 2px;
+  border-radius: var(--border-radius-badge);
+}
+
+/* The AWS smile-arrow, drawn small. Replaces the old orange dot. */
+.brand svg {
+  flex: none;
+  display: block;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xxs);
+}
+
+/* Cloudscape top-navigation links: subtle, underline on hover/current. */
+.nav a {
+  color: #d1d5db;
+  text-decoration: none;
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-bold);
+  padding: var(--space-xs) var(--space-s);
+  border-radius: var(--border-radius-input);
   min-height: 40px;
   display: inline-flex;
   align-items: center;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
 }
 
-.nav a[aria-current="page"] { color: var(--ink); background: var(--surface-2); }
-.nav a:hover { color: var(--ink); }
-
-/* ------------------------------------------------------------------- main */
-
-main { padding: 1.5rem 0 3rem; }
-
-h1 { font-size: 1.5rem; line-height: 1.25; letter-spacing: -0.02em; margin: 0 0 0.4rem; }
-h2 { font-size: 1.1rem; margin: 2rem 0 0.75rem; letter-spacing: -0.01em; }
-p.lede { color: var(--ink-2); margin: 0 0 1.5rem; }
-
-/* ------------------------------------------------------------------ cards */
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1rem;
+.nav a:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.set-list { display: grid; gap: 0.6rem; padding: 0; margin: 0; list-style: none; }
+.nav a[aria-current='page'] {
+  color: #ffffff;
+  border-bottom-color: #42b4ff;
+  border-radius: 0;
+}
 
+.nav a:focus-visible {
+  outline: 2px solid #42b4ff;
+  outline-offset: 2px;
+}
+
+/* ----------------------------------------------------------------- main */
+
+/* main carries .wrap too, so its horizontal padding would otherwise be reset by
+   .wrap's shorthand. Target the element's own role explicitly. */
+main,
+main.wrap {
+  padding-top: var(--space-xxl);
+  padding-bottom: var(--space-xxxl);
+}
+
+@media (min-width: 640px) {
+  main,
+  main.wrap {
+    padding-top: var(--space-xxxl);
+    padding-bottom: 64px;
+  }
+}
+
+/* ----------------------------------------------------------- containers */
+
+/* Cloudscape Container: 16px radius, header divider, padded content. */
+.container {
+  background: var(--color-background-container-content);
+  border: 1px solid var(--color-border-divider-default);
+  border-radius: var(--border-radius-container);
+  padding: var(--space-card-vertical) var(--space-card-horizontal);
+}
+
+.container-header {
+  font-size: var(--font-size-heading-s);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-heading-default);
+  margin: 0 0 var(--space-s);
+}
+
+/* ------------------------------------------------------- button family */
+
+/* Cloudscape Button: pill, 2px border, bold label, 32px tall minimum. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 40px;
+  padding: 8px var(--space-button-horizontal);
+  border-radius: var(--border-radius-button);
+  border: var(--border-width-button) solid var(--color-border-button-normal-default);
+  background: var(--color-background-button-normal-default);
+  color: var(--color-text-button-normal-default);
+  font-family: inherit;
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 100ms linear, border-color 100ms linear;
+}
+
+.btn:hover {
+  background: var(--color-background-button-normal-hover);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  border-color: var(--color-border-input-default);
+  background: transparent;
+  color: var(--color-text-body-secondary);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* The single primary action on a page. */
+.btn-primary {
+  background: var(--color-background-button-primary-default);
+  border-color: var(--color-background-button-primary-default);
+  color: var(--color-text-button-primary-default);
+}
+
+.btn-primary:hover {
+  background: var(--color-background-button-primary-hover);
+  border-color: var(--color-background-button-primary-hover);
+}
+
+.btn-primary:disabled {
+  background: var(--color-border-input-default);
+  border-color: var(--color-border-input-default);
+  color: var(--color-text-button-primary-default);
+  opacity: 0.5;
+}
+
+/* Destructive confirmation. Deliberately NOT primary: Cloudscape reserves the
+   primary variant for the page's main task. */
+.btn-danger {
+  border-color: var(--color-border-status-error);
+  background: transparent;
+  color: var(--color-text-status-error);
+}
+
+.btn-danger:hover {
+  background: var(--color-background-status-error);
+}
+
+/* Text-only action, for tertiary links in footers and toolbars. */
+.btn-link {
+  background: none;
+  border: 0;
+  padding: var(--space-xxs) 0;
+  font-family: inherit;
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-accent);
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--border-radius-badge);
+}
+
+.btn-link:hover {
+  color: var(--color-text-interactive-hover);
+  text-decoration: underline;
+}
+
+.btn-link:focus-visible {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: 2px;
+}
+
+.btn-link-danger {
+  color: var(--color-text-status-error);
+}
+
+.btn-link-danger:hover {
+  color: var(--color-text-status-error);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-m);
+}
+
+/* --------------------------------------------------------------- fields */
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 var(--space-l);
+}
+
+legend,
+.field-label {
+  display: block;
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-label);
+  margin-bottom: var(--space-xs);
+  padding: 0;
+}
+
+/* Cloudscape segmented control for mutually-exclusive density options. */
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  width: 100%;
+  border: var(--border-width-field) solid var(--color-border-input-default);
+  border-radius: var(--border-radius-input);
+  overflow: hidden;
+  background: var(--color-background-input-default);
+}
+
+.segmented button {
+  flex: 1 1 auto;
+  min-width: 64px;
+  min-height: 40px;
+  padding: var(--space-xs) var(--space-s);
+  border: 0;
+  border-right: var(--border-width-field) solid var(--color-border-divider-default);
+  background: transparent;
+  color: var(--color-text-button-normal-default);
+  font-family: inherit;
+  font-size: var(--font-size-body-m);
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 100ms linear;
+}
+
+.segmented button:last-child {
+  border-right: 0;
+}
+
+.segmented button:hover {
+  background: var(--color-background-button-normal-hover);
+}
+
+.segmented button[aria-pressed='true'] {
+  background: var(--color-background-item-selected);
+  color: var(--color-text-accent);
+  box-shadow: inset 0 0 0 2px var(--color-border-item-selected);
+}
+
+.segmented button:focus-visible {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: -2px;
+}
+
+/* Cloudscape Input: 8px radius, 1px border, 40px tall focused ring. */
+.input {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  min-height: 40px;
+  padding: var(--space-xs) var(--space-s);
+  border: var(--border-width-field) solid var(--color-border-input-default);
+  border-radius: var(--border-radius-input);
+  background: var(--color-background-input-default);
+  color: var(--color-text-body-default);
+  font-family: inherit;
+  font-size: var(--font-size-body-m);
+  font-variant-numeric: tabular-nums;
+}
+
+.input:hover {
+  border-color: var(--color-border-item-focused);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-border-input-focused);
+  box-shadow: inset 0 0 0 1px var(--color-border-input-focused);
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--color-border-status-error);
+}
+
+.input[aria-invalid='true']:focus {
+  border-color: var(--color-border-status-error);
+  box-shadow: inset 0 0 0 1px var(--color-border-status-error);
+}
+
+.field-hint {
+  display: block;
+  margin-top: var(--space-xxs);
+  font-size: var(--font-size-body-s);
+  color: var(--color-text-body-secondary);
+}
+
+.field-error {
+  display: block;
+  margin-top: var(--space-xxs);
+  font-size: var(--font-size-body-s);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-status-error);
+}
+
+.field-error:empty {
+  display: none;
+}
+
+.custom-count {
+  margin-top: var(--space-s);
+  padding: var(--space-s) var(--space-m);
+  border: 1px solid var(--color-border-divider-default);
+  border-radius: var(--border-radius-input);
+  background: var(--color-background-container-content);
+}
+
+/* Checkbox row */.switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 40px;
+  cursor: pointer;
+  user-select: none;
+  color: var(--color-text-label);
+  font-size: var(--font-size-body-m);
+}
+
+.switch input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-background-control-checked);
+  flex: none;
+  margin: 0;
+}
+
+.switch input:focus-visible {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------ set list */
+
+.set-list {
+  display: grid;
+  gap: var(--space-xs);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Behaves like a Cloudscape "cards" resource row. */
 .set-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: var(--space-s);
   width: 100%;
-  min-height: var(--tap);
-  padding: 0.8rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  color: var(--ink);
+  min-height: 56px;
+  padding: var(--space-s) var(--space-l);
+  background: var(--color-background-container-content);
+  border: 1px solid var(--color-border-divider-default);
+  border-radius: var(--border-radius-container);
+  color: var(--color-text-body-default);
   font: inherit;
   text-align: left;
   cursor: pointer;
 }
 
-.set-item:hover { border-color: var(--accent); }
-.set-item:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.set-item:hover {
+  border-color: var(--color-border-item-selected);
+  background: var(--color-background-item-selected);
+}
 
-.set-item .name { font-weight: 600; }
-.set-item .meta { color: var(--ink-2); font-size: 0.85rem; font-weight: 400; }
+.set-item:focus-visible {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: 2px;
+}
 
+.set-item .name {
+  font-size: var(--font-size-heading-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-heading-default);
+}
+
+.set-item .meta {
+  font-size: var(--font-size-body-s);
+  color: var(--color-text-body-secondary);
+  font-weight: var(--font-weight-normal);
+}
+
+/* Cloudscape badge: 4px radius, small bold text, status-tinted. */
 .badge {
-  font-size: 0.78rem;
-  font-weight: 700;
-  padding: 0.25rem 0.5rem;
-  border-radius: 999px;
-  background: var(--surface-2);
-  color: var(--ink-2);
-  white-space: nowrap;
   flex: none;
-}
-
-.badge[data-tone="good"] { background: color-mix(in srgb, var(--ok) 18%, transparent); color: var(--ok); }
-.badge[data-tone="mid"] { background: color-mix(in srgb, var(--accent) 25%, transparent); color: var(--warn); }
-.badge[data-tone="bad"] { background: color-mix(in srgb, var(--bad) 16%, transparent); color: var(--bad); }
-
-/* ----------------------------------------------------------------- inputs */
-
-fieldset { border: 0; padding: 0; margin: 0 0 1.25rem; }
-legend { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; padding: 0; }
-
-.chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-
-.chip {
-  min-height: var(--tap);
-  padding: 0.6rem 0.9rem;
-  border-radius: 999px;
-  border: 1.5px solid var(--line);
-  background: var(--surface);
-  color: var(--ink);
-  font: inherit;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
-  flex: 1 1 calc(33.333% - 0.5rem);
-  min-width: 0;
+  font-size: var(--font-size-body-s);
+  font-weight: var(--font-weight-bold);
+  padding: 2px var(--space-xs);
+  border-radius: var(--border-radius-badge);
+  background: var(--color-background-status-info);
+  color: var(--color-text-status-info);
+  border: 1px solid transparent;
   white-space: nowrap;
 }
 
-.chip[aria-pressed="true"] {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--accent-ink);
+.badge[data-tone='good'] {
+  background: var(--color-background-status-success);
+  color: var(--color-text-status-success);
+  border-color: var(--color-border-status-success);
 }
 
-.chip:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-
-.switch {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  min-height: var(--tap);
-  cursor: pointer;
-  user-select: none;
+.badge[data-tone='mid'] {
+  background: var(--color-background-status-warning);
+  color: var(--color-text-status-warning);
+  border-color: var(--color-border-status-warning);
 }
 
-.switch input { width: 22px; height: 22px; accent-color: var(--accent); flex: none; }
-
-/* ---------------------------------------------------------------- buttons */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: var(--tap);
-  padding: 0.75rem 1.25rem;
-  border-radius: 10px;
-  border: 1.5px solid var(--line);
-  background: var(--surface);
-  color: var(--ink);
-  font: inherit;
-  font-weight: 650;
-  cursor: pointer;
-  text-decoration: none;
+.badge[data-tone='bad'] {
+  background: var(--color-background-status-error);
+  color: var(--color-text-status-error);
+  border-color: var(--color-border-status-error);
 }
 
-.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+/* ---------------------------------------------------------- exam runner */
 
-.btn-primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
+body.is-exam {
+  padding-bottom: 0;
 }
 
-.btn-block { width: 100%; }
-.btn-ghost { background: transparent; border-color: transparent; color: var(--ink-2); }
-.btn-ghost:hover { background: var(--surface-2); color: var(--ink); }
+body.is-exam .site-footer {
+  display: none;
+}
 
-.btn-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
-.btn-row > .btn { flex: 1 1 auto; }
+body.is-exam main {
+  padding: 0;
+}
 
-/* ------------------------------------------------------------ exam runner */
-
-/* During an exam the screen is dedicated to the question: hide page chrome,
-   and let the question list own the scroll. */
-body.is-exam { padding-bottom: 0; }
-body.is-exam .site-footer { display: none; }
-body.is-exam main { padding: 0; }
-body.is-exam .wrap { max-width: none; padding: 0; }
+body.is-exam .wrap {
+  max-width: none;
+  padding: 0;
+}
 
 .exam {
   display: flex;
@@ -258,367 +711,686 @@ body.is-exam .wrap { max-width: none; padding: 0; }
   min-height: calc(100dvh - 57px);
 }
 
-.exam-top { padding: 0.85rem 1rem 0; max-width: var(--maxw); margin: 0 auto; width: 100%; }
+.exam-top {
+  padding: var(--space-m) var(--space-container-horizontal) 0;
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+}
 
+/* Cloudscape-style progress bar. */
 .progress {
-  height: 6px;
-  background: var(--surface-2);
-  border-radius: 999px;
+  height: 8px;
+  background: var(--color-border-divider-default);
+  border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 0.55rem;
+  margin-bottom: var(--space-xs);
 }
 
 .progress > i {
   display: block;
   height: 100%;
-  background: var(--accent);
-  border-radius: 999px;
+  background: var(--color-background-button-primary-default);
+  border-radius: 4px;
   transition: width 180ms ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .progress > i { transition: none; }
+  .progress > i {
+    transition: none;
+  }
 }
 
 .exam-stats {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.85rem;
-  color: var(--ink-2);
-  gap: 0.5rem;
-  max-width: var(--maxw);
+  gap: var(--space-xs);
+  font-size: var(--font-size-body-s);
+  color: var(--color-text-body-secondary);
+  max-width: 760px;
   margin: 0 auto;
 }
 
-.exam-stats .clock { font-variant-numeric: tabular-nums; }
-
-.exam-body { flex: 1; padding: 1.25rem 1rem 7rem; max-width: var(--maxw); margin: 0 auto; width: 100%; }
-
-.exam-abandon {
-  display: block;
-  margin: 0 auto 1rem;
-  max-width: var(--maxw);
+.exam-stats .clock {
+  font-variant-numeric: tabular-nums;
 }
 
-.q-stem { font-size: 1.06rem; font-weight: 600; line-height: 1.5; margin: 0 0 1.1rem; }
+.exam-body {
+  flex: 1;
+  padding: var(--space-l) var(--space-container-horizontal) 7rem;
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+}
 
+.q-stem {
+  font-size: var(--font-size-heading-s);
+  line-height: 1.5;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-heading-default);
+  margin: 0 0 var(--space-m);
+}
+
+/* Cloudscape "info" flashbar used for the multi-select hint. */
 .q-hint {
   display: inline-block;
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--warn);
-  background: color-mix(in srgb, var(--accent) 20%, transparent);
-  padding: 0.2rem 0.5rem;
-  border-radius: 6px;
-  margin-bottom: 0.7rem;
+  font-size: var(--font-size-body-s);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-status-info);
+  background: var(--color-background-status-info);
+  border-left: 2px solid var(--color-text-status-info);
+  padding: var(--space-xxs) var(--space-xs);
+  margin-bottom: var(--space-s);
+  border-radius: 0 var(--border-radius-badge) var(--border-radius-badge) 0;
 }
 
-.options { display: grid; gap: 0.6rem; }
+.options {
+  display: grid;
+  gap: var(--space-xs);
+}
 
+/* Option row: Cloudscape radio/checkbox with a bordered tile. */
 .option {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.85rem 1rem;
-  min-height: var(--tap);
-  border: 1.5px solid var(--line);
-  border-radius: 10px;
-  background: var(--surface);
+  gap: var(--space-s);
+  padding: var(--space-s) var(--space-m);
+  min-height: 48px;
+  border: var(--border-width-field) solid var(--color-border-input-default);
+  border-radius: var(--border-radius-input);
+  background: var(--color-background-input-default);
+  color: var(--color-text-body-default);
   cursor: pointer;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
-.option:hover { border-color: color-mix(in srgb, var(--accent) 60%, var(--line)); }
+.option:hover {
+  border-color: var(--color-border-item-focused);
+}
 
 .option input {
-  margin: 0.2rem 0 0;
-  width: 20px;
-  height: 20px;
-  accent-color: var(--accent);
+  margin: 2px 0 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-background-control-checked);
   flex: none;
 }
 
-.option .letter { font-weight: 700; color: var(--ink-2); flex: none; min-width: 1.1rem; }
-.option:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
-.option:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+.option .letter {
+  flex: none;
+  min-width: 1.1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-body-secondary);
+}
 
-/* Bottom action bar */
+.option:has(input:checked) {
+  border-color: var(--color-border-item-selected);
+  box-shadow: inset 0 0 0 1px var(--color-border-item-selected);
+  background: var(--color-background-item-selected);
+}
+
+.option:has(input:checked) .letter {
+  color: var(--color-text-accent);
+}
+
+.option:has(input:focus-visible) {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: 2px;
+}
+
+/* Sticky action bar */
 .exam-bar {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
-  backdrop-filter: blur(8px);
-  border-top: 1px solid var(--line);
-  padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));
   z-index: 30;
+  background: var(--color-background-container-content);
+  border-top: 1px solid var(--color-border-divider-default);
+  padding: var(--space-s) var(--space-container-horizontal)
+    calc(var(--space-s) + env(safe-area-inset-bottom));
 }
 
 .exam-bar .inner {
-  max-width: var(--maxw);
+  max-width: 760px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-xs);
 }
 
-.exam-bar .btn { flex: 1 1 0; }
+.exam-bar .btn {
+  flex: 1 1 0;
+}
 
 .counter-btn {
   flex: 0 0 auto;
-  min-width: 76px;
-  min-height: var(--tap);
-  border-radius: 10px;
-  border: 1.5px solid var(--line);
-  background: var(--surface);
-  color: var(--ink);
+  min-width: 80px;
+  min-height: 40px;
+  padding: 0 var(--space-xs);
+  border-radius: var(--border-radius-button);
+  border: var(--border-width-button) solid var(--color-border-button-normal-default);
+  background: var(--color-background-button-normal-default);
+  color: var(--color-text-button-normal-default);
   font: inherit;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
-  padding: 0 0.5rem;
 }
 
-.counter-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.counter-btn:hover {
+  background: var(--color-background-button-normal-hover);
+}
 
-/* Answer grid sheet */
+.counter-btn:focus-visible {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: 2px;
+}
+
+.exam-abandon {
+  display: block;
+  margin: 0 auto var(--space-m);
+  max-width: 760px;
+}
+
+/* ---------------------------------------------- modal / sheet (dialog) */
+
 .sheet-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
   z-index: 40;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  background: var(--color-shadow-scrim);
+  padding: 0;
 }
 
+@media (min-width: 600px) {
+  .sheet-backdrop {
+    align-items: center;
+    padding: var(--space-l);
+  }
+}
+
+/* Cloudscape Modal: 16px radius, header divider, footer actions. */
 .sheet {
-  background: var(--surface);
   width: 100%;
-  max-width: var(--maxw);
-  border-radius: 16px 16px 0 0;
-  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
-  max-height: 80dvh;
+  max-width: 600px;
+  max-height: 85dvh;
   overflow: auto;
+  background: var(--color-background-container-content);
+  border-radius: var(--border-radius-container) var(--border-radius-container) 0 0;
+  padding: var(--space-l) var(--space-container-horizontal)
+    calc(var(--space-l) + env(safe-area-inset-bottom));
+  box-shadow: 0 4px 20px var(--color-shadow-default);
 }
 
-.sheet h2 { margin: 0 0 0.75rem; font-size: 1rem; }
+@media (min-width: 600px) {
+  .sheet {
+    border-radius: var(--border-radius-container);
+    padding-bottom: var(--space-l);
+  }
+}
 
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 0.4rem; }
+.sheet h2 {
+  margin: 0 0 var(--space-s);
+  font-size: var(--font-size-heading-m);
+  padding-bottom: var(--space-s);
+  border-bottom: 1px solid var(--color-border-divider-default);
+}
+
+/* Answer grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: var(--space-xs);
+}
 
 .grid button {
-  min-height: 46px;
-  border-radius: 8px;
-  border: 1.5px solid var(--line);
-  background: var(--surface);
-  color: var(--ink-2);
+  min-height: 44px;
+  border-radius: var(--border-radius-input);
+  border: var(--border-width-field) solid var(--color-border-input-default);
+  background: var(--color-background-input-default);
+  color: var(--color-text-body-secondary);
   font: inherit;
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
 }
 
-.grid button[data-state="answered"] {
-  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
-  color: var(--ink);
+.grid button:hover {
+  border-color: var(--color-border-item-focused);
 }
 
-/* Answering the current question should still read as "answered". */
-.grid button[data-state="current"] {
-  border-color: var(--accent);
-  box-shadow: inset 0 0 0 2px var(--accent);
-  color: var(--ink);
-  font-weight: 800;
+.grid button[data-state='answered'] {
+  background: var(--color-background-item-selected);
+  border-color: var(--color-border-item-selected);
+  color: var(--color-text-accent);
 }
 
-.grid button[data-state="current"][data-answered="true"] {
-  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+.grid button[data-state='current'] {
+  border-color: var(--color-border-item-selected);
+  box-shadow: inset 0 0 0 2px var(--color-border-item-selected);
+  color: var(--color-text-heading-default);
+  font-weight: var(--font-weight-bold);
 }
 
-.grid button:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+.grid button[data-state='current'][data-answered='true'] {
+  background: var(--color-background-item-selected);
+}
+
+.grid button:focus-visible {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: 1px;
+}
 
 .legend-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin: 0.9rem 0 0;
-  font-size: 0.8rem;
-  color: var(--ink-2);
+  gap: var(--space-m);
+  margin: var(--space-s) 0 0;
+  font-size: var(--font-size-body-s);
+  color: var(--color-text-body-secondary);
 }
 
-.legend-row span { display: inline-flex; align-items: center; gap: 0.4rem; }
-.legend-row i { width: 14px; height: 14px; border-radius: 4px; border: 1.5px solid var(--line); display: inline-block; }
-.legend-row i[data-state="answered"] { background: color-mix(in srgb, var(--accent) 22%, var(--surface)); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+.legend-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xxs);
+}
 
-/* ----------------------------------------------------------------- results */
+.legend-row i {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: var(--border-width-field) solid var(--color-border-input-default);
+}
+
+.legend-row i[data-state='answered'] {
+  background: var(--color-background-item-selected);
+  border-color: var(--color-border-item-selected);
+}
+
+/* -------------------------------------------------------------- results */
 
 .score-hero {
   text-align: center;
-  padding: 1.5rem 1rem;
-  border-radius: var(--radius);
-  background: var(--surface);
-  border: 1px solid var(--line);
+  padding: var(--space-xl) var(--space-m);
+  background: var(--color-background-container-content);
+  border: 1px solid var(--color-border-divider-default);
+  border-radius: var(--border-radius-container);
 }
 
 .score-big {
-  font-size: 2.6rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-size: var(--font-size-display-l);
   line-height: 1.1;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-heading-default);
   font-variant-numeric: tabular-nums;
 }
 
-.score-pct { color: var(--ink-2); font-size: 0.95rem; margin-top: 0.25rem; }
+.score-pct {
+  margin-top: var(--space-xxs);
+  font-size: var(--font-size-body-m);
+  color: var(--color-text-body-secondary);
+}
 
-.review-list { display: grid; gap: 0.75rem; margin-top: 1rem; }
+.review-list {
+  display: grid;
+  gap: var(--space-s);
+  margin-top: var(--space-m);
+}
 
-.review-item { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 0.9rem 1rem; }
-.review-item[data-result="correct"] { border-left: 4px solid var(--ok); }
-.review-item[data-result="wrong"] { border-left: 4px solid var(--bad); }
-.review-item[data-result="blank"] { border-left: 4px solid var(--ink-2); }
+/* Cloudscape container with a status-coloured left border. */
+.review-item {
+  padding: var(--space-m) var(--space-l);
+  background: var(--color-background-container-content);
+  border: 1px solid var(--color-border-divider-default);
+  border-radius: var(--border-radius-container);
+}
 
-.review-item .rq { font-weight: 600; margin: 0 0 0.6rem; line-height: 1.45; }
-.review-item .rq .num { color: var(--ink-2); font-weight: 700; margin-right: 0.4rem; }
+.review-item[data-result='correct'] {
+  border-left: 4px solid var(--color-border-status-success);
+}
 
-.answer-line { font-size: 0.9rem; margin: 0.25rem 0; }
-.answer-line .lbl { color: var(--ink-2); }
-.answer-line .you { color: var(--bad); font-weight: 700; }
-.answer-line .key { color: var(--ok); font-weight: 700; }
-.answer-line .you.ok { color: var(--ok); }
-.blank-note { color: var(--ink-2); font-style: italic; }
+.review-item[data-result='wrong'] {
+  border-left: 4px solid var(--color-border-status-error);
+}
 
-/* Review: full option text, with the correct answer and your pick marked */
+.review-item[data-result='blank'] {
+  border-left: 4px solid var(--color-border-input-default);
+}
+
+.review-item .rq {
+  margin: 0 0 var(--space-s);
+  font-size: var(--font-size-heading-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-heading-default);
+  line-height: 1.5;
+}
+
+.review-item .rq .num {
+  margin-right: var(--space-xxs);
+  color: var(--color-text-body-secondary);
+  font-weight: var(--font-weight-bold);
+}
+
 .review-options {
   list-style: none;
-  margin: 0.6rem 0 0;
-  padding: 0;
   display: grid;
-  gap: 0.35rem;
+  gap: var(--space-xxs);
+  margin: 0;
+  padding: 0;
 }
 
 .review-option {
   display: grid;
   grid-template-columns: 1.1rem 1fr auto;
-  gap: 0.55rem;
+  gap: var(--space-xs);
   align-items: baseline;
-  padding: 0.5rem 0.7rem;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  font-size: 0.92rem;
-  line-height: 1.4;
+  padding: var(--space-xs) var(--space-s);
+  border: var(--border-width-field) solid var(--color-border-divider-default);
+  border-radius: var(--border-radius-input);
+  font-size: var(--font-size-body-m);
+  line-height: 1.5;
 }
 
-.review-option .letter { color: var(--ink-2); font-weight: 700; }
-.review-option .opt-text { min-width: 0; }
+.review-option .letter {
+  color: var(--color-text-body-secondary);
+  font-weight: var(--font-weight-bold);
+}
+
+.review-option .opt-text {
+  min-width: 0;
+}
 
 .review-option .opt-mark {
-  font-size: 0.7rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
   align-self: center;
+  font-size: var(--font-size-body-s);
+  font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
-/* The correct option is always shown, even if you got it wrong. */
-.review-option[data-key="true"] {
-  border-color: color-mix(in srgb, var(--ok) 55%, var(--line));
-  background: color-mix(in srgb, var(--ok) 12%, var(--surface));
+/* Correct answer is always surfaced, right or wrong. */
+.review-option[data-key='true'] {
+  border-color: var(--color-border-status-success);
+  background: var(--color-background-status-success);
 }
-.review-option[data-key="true"] .letter { color: var(--ok); }
-.review-option[data-key="true"] .opt-mark { color: var(--ok); }
 
-/* What you picked, when it was wrong. */
-.review-option[data-yours="true"][data-key="false"] {
-  border-color: color-mix(in srgb, var(--bad) 55%, var(--line));
-  background: color-mix(in srgb, var(--bad) 12%, var(--surface));
+.review-option[data-key='true'] .letter,
+.review-option[data-key='true'] .opt-mark {
+  color: var(--color-text-status-success);
 }
-.review-option[data-yours="true"][data-key="false"] .letter { color: var(--bad); }
-.review-option[data-yours="true"][data-key="false"] .opt-mark { color: var(--bad); }
 
-.review-option[data-yours="true"][data-key="true"] .opt-mark { color: var(--ok); }
+/* What you picked, when it differs from the key. */
+.review-option[data-yours='true'][data-key='false'] {
+  border-color: var(--color-border-status-error);
+  background: var(--color-background-status-error);
+}
+
+.review-option[data-yours='true'][data-key='false'] .letter,
+.review-option[data-yours='true'][data-key='false'] .opt-mark {
+  color: var(--color-text-status-error);
+}
 
 @media (max-width: 420px) {
-  .review-option { grid-template-columns: 1.1rem 1fr; }
-  .review-option .opt-mark { grid-column: 2; justify-self: start; }
+  .review-option {
+    grid-template-columns: 1.1rem 1fr;
+  }
+
+  .review-option .opt-mark {
+    grid-column: 2;
+    justify-self: start;
+  }
 }
 
+.blank-note {
+  color: var(--color-text-body-secondary);
+  font-style: italic;
+}
+
+/* Explanation block, styled like a Cloudscape "expandable content" area. */
 .explain {
-  margin-top: 0.7rem;
-  padding-top: 0.7rem;
-  border-top: 1px dashed var(--line);
-  font-size: 0.9rem;
-  color: var(--ink-2);
+  margin-top: var(--space-s);
+  padding-top: var(--space-s);
+  border-top: 1px solid var(--color-border-divider-default);
+  font-size: var(--font-size-body-m);
+  color: var(--color-text-body-secondary);
 }
 
-.explain a { color: var(--accent); word-break: break-word; }
+.explain a {
+  color: var(--color-text-accent);
+  word-break: break-word;
+}
 
-/* ------------------------------------------------------------------ misc */
+/* ---------------------------------------------------------------- misc */
+
+/* Cloudscape flashbar-style notice. */
+.notice {
+  margin: var(--space-m) 0;
+  padding: var(--space-s) var(--space-m);
+  background: var(--color-background-status-info);
+  border-left: 4px solid var(--color-text-status-info);
+  border-radius: 0 var(--border-radius-input) var(--border-radius-input) 0;
+  font-size: var(--font-size-body-m);
+  color: var(--color-text-body-default);
+}
+
+.empty {
+  padding: var(--space-xl) var(--space-m);
+  text-align: center;
+  color: var(--color-text-body-secondary);
+}
+
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-s);
+}
+
+.toggle-label {
+  color: var(--color-text-body-secondary);
+  font-size: var(--font-size-body-m);
+}
+
+.hide {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------- footer */
 
 .site-footer {
-  border-top: 1px solid var(--line);
-  padding: 1.5rem 0 2rem;
-  font-size: 0.8rem;
-  color: var(--ink-2);
+  border-top: 1px solid var(--color-border-divider-default);
+  /* Extra bottom room so the fixed credit floater never covers footer controls. */
+  padding: var(--space-xl) 0 88px;
+  font-size: var(--font-size-body-s);
+  color: var(--color-text-body-secondary);
 }
 
-.site-footer a { color: var(--ink-2); }
+.site-footer p {
+  margin: 0 0 var(--space-xs);
+}
+
+.site-footer a {
+  color: var(--color-text-accent);
+}
 
 /* Footer data controls: Export · Import · Reset */
-.data-controls { margin-top: 1rem; }
+.data-controls {
+  margin-top: var(--space-m);
+}
 
 .data-controls-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.35rem 0.55rem;
+  gap: var(--space-xxs) var(--space-s);
 }
 
-.data-controls .sep { color: var(--line); }
+.data-controls .sep {
+  color: var(--color-border-divider-default);
+}
 
-.btn-link {
-  background: none;
-  border: 0;
-  padding: 0.4rem 0;
-  font: inherit;
-  font-weight: 650;
-  color: var(--ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+/* ---------------------------------------------------------- attribution */
+
+/* Subtle credit floater. Sits bottom-left, visually quiet until interacted with.
+   Hidden during an exam so it cannot overlap the sticky action bar. */
+.credit {
+  position: fixed;
+  left: var(--space-m);
+  bottom: calc(var(--space-m) + env(safe-area-inset-bottom));
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-xs);
+  max-width: min(280px, calc(100vw - 2 * var(--space-m)));
+  /* Grow upward from the bottom-left corner so the panel is never clipped. */
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.credit > * {
+  pointer-events: auto;
+}
+
+body.is-exam .credit {
+  display: none;
+}
+
+.credit-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 6px var(--space-s);
+  border: 1px solid var(--color-border-divider-default);
+  border-radius: 999px;
+  background: var(--color-background-container-content);
+  color: var(--color-text-body-secondary);
+  font-family: inherit;
+  font-size: var(--font-size-body-s);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.4;
   cursor: pointer;
-  border-radius: 4px;
+  opacity: 0.7;
+  transition: opacity 120ms linear, border-color 120ms linear;
+  box-shadow: 0 1px 3px var(--color-shadow-default);
 }
 
-.btn-link:hover { color: var(--accent); }
-.btn-link:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-
-.btn-link-danger { color: var(--bad); }
-.btn-link-danger:hover { color: var(--bad); filter: brightness(1.15); }
-
-.hide { display: none !important; }
-
-.notice {
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
-  font-size: 0.88rem;
-  color: var(--ink-2);
-  margin: 1rem 0;
+.credit-toggle:hover,
+.credit-toggle:focus-visible {
+  opacity: 1;
+  border-color: var(--color-border-input-default);
+  color: var(--color-text-body-default);
 }
 
-.empty { text-align: center; color: var(--ink-2); padding: 2rem 1rem; }
+.credit-toggle:focus-visible {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: 2px;
+}
 
-.row-between { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+/* Small accent dot; matches the AWS smile colour used in the logo. */
+.credit-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff9900;
+  flex: none;
+}
 
-.toggle-label { font-size: 0.9rem; color: var(--ink-2); }
+.credit-panel {
+  width: 100%;
+  padding: var(--space-s) var(--space-m);
+  background: var(--color-background-container-content);
+  border: 1px solid var(--color-border-divider-default);
+  border-radius: var(--border-radius-input);
+  box-shadow: 0 2px 8px var(--color-shadow-default);
+}
+
+/* Collapsed by default; the toggle reveals it. A class is used rather than the
+   hidden attribute so it cannot be overridden by display rules. */
+.credit-panel.is-collapsed {
+  display: none;
+}
+
+.credit-panel.is-open {
+  display: block;
+}
+
+.credit-text {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--font-size-body-s);
+  color: var(--color-text-body-secondary);
+}
+
+.credit-text a {
+  color: var(--color-text-accent);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.credit-text a:hover {
+  text-decoration: underline;
+}
+
+.credit-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  flex-wrap: wrap;
+}
+
+.credit-link {
+  font-size: var(--font-size-body-s);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-accent);
+  text-decoration: none;
+}
+
+.credit-link:hover {
+  text-decoration: underline;
+}
+
+.credit-hide {
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: var(--font-size-body-s);
+  color: var(--color-text-body-secondary);
+  text-decoration: underline;
+  cursor: pointer;
+  border-radius: var(--border-radius-badge);
+}
+
+.credit-hide:hover {
+  color: var(--color-text-body-default);
+}
+
+.credit-hide:focus-visible {
+  outline: 2px solid var(--color-border-item-focused);
+  outline-offset: 2px;
+}
+
+/* ----------------------------------------------------------- responsive */
 
 @media (min-width: 640px) {
-  h1 { font-size: 1.9rem; }
-  .exam-body { padding-bottom: 6rem; }
+  h1 {
+    font-size: var(--font-size-display-l);
+  }
+
+  .exam-body {
+    padding-bottom: 6rem;
+  }
+
+  .segmented button {
+    min-width: 80px;
+  }
 }

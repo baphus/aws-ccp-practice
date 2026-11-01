@@ -11,7 +11,7 @@
    To ship an update: bump VERSION, deploy. Old caches are purged on activate.
    ========================================================================== */
 
-const VERSION = '6';
+const VERSION = '9';
 
 const CACHE = `ccp-shell-v${VERSION}`;
 
