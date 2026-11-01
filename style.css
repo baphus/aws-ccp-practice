@@ -914,17 +914,32 @@ body.is-exam .wrap {
   }
 }
 
-/* Cloudscape Modal: 16px radius, header divider, footer actions. */
+/* Cloudscape Modal: 16px radius, header divider, footer actions.
+   Flex column so the grid scrolls while the header and footer stay in place. */
 .sheet {
   width: 100%;
   max-width: 600px;
   max-height: 85dvh;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   background: var(--color-background-container-content);
   border-radius: var(--border-radius-container) var(--border-radius-container) 0 0;
   padding: var(--space-l) var(--space-container-horizontal)
     calc(var(--space-l) + env(safe-area-inset-bottom));
   box-shadow: 0 4px 20px var(--color-shadow-default);
+}
+
+/* The answer grid is the only scrolling region. */
+.sheet .grid {
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: var(--space-xxs);
+}
+
+.sheet h2,
+.sheet-footer {
+  flex: none;
 }
 
 @media (min-width: 600px) {
@@ -993,6 +1008,7 @@ body.is-exam .wrap {
   margin: var(--space-s) 0 0;
   font-size: var(--font-size-body-s);
   color: var(--color-text-body-secondary);
+  flex: none;
 }
 
 .legend-row span {
@@ -1012,6 +1028,41 @@ body.is-exam .wrap {
 .legend-row i[data-state='answered'] {
   background: var(--color-background-item-selected);
   border-color: var(--color-border-item-selected);
+}
+
+/* Mirror the grid's current state: a strong inset ring, so it reads differently
+   from both "answered" and "not answered". */
+.legend-row i[data-state='current'] {
+  background: transparent;
+  border-color: var(--color-border-input-default);
+  box-shadow: inset 0 0 0 2px var(--color-border-item-selected);
+}
+
+.legend-row i[data-state='current'][data-answered='true'] {
+  background: var(--color-background-item-selected);
+  border-color: var(--color-border-item-selected);
+}
+
+/* Modal footer: finish action pushed to the right, with its warning above. */
+.sheet-footer {
+  margin-top: var(--space-m);
+  padding-top: var(--space-m);
+  border-top: 1px solid var(--color-border-divider-default);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-xs);
+}
+
+.sheet-note {
+  margin: 0;
+  align-self: stretch;
+  font-size: var(--font-size-body-s);
+  color: var(--color-text-body-secondary);
+}
+
+.sheet-footer .btn {
+  min-width: 140px;
 }
 
 /* -------------------------------------------------------------- results */

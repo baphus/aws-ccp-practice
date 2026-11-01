@@ -400,6 +400,8 @@ function openSheet() {
     }));
   });
 
+  const currentAnswered = session.answers.has(session.questions[session.index].id);
+
   const sheet = el('div', { class: 'sheet', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Question list' });
   sheet.append(
     el('div', { class: 'row-between' },
@@ -409,7 +411,18 @@ function openSheet() {
     el('div', { class: 'legend-row', 'aria-hidden': 'true' },
       el('span', {}, el('i', { 'data-state': 'answered' }), 'Answered'),
       el('span', {}, el('i', {}), 'Not answered'),
-      el('span', {}, el('i', { 'data-state': 'current' }), 'Current'))
+      el('span', {}, el('i', {
+        'data-state': 'current',
+        'data-answered': currentAnswered ? 'true' : 'false',
+      }), 'Current')),
+    el('div', { class: 'sheet-footer' },
+      el('p', { class: 'sheet-note', text: 'Finishing now marks any unanswered questions as incorrect.' }),
+      el('button', {
+        class: 'btn btn-primary',
+        type: 'button',
+        text: 'Finish exam',
+        onclick: () => finishFromSheet(),
+      }))
   );
 
   backdrop = el('div', { class: 'sheet-backdrop', id: 'sheet-backdrop', onclick: (e) => { if (e.target === backdrop) closeSheet(); } });
@@ -417,6 +430,12 @@ function openSheet() {
   document.body.append(backdrop);
   sheet.querySelector('button[data-state="current"]')?.focus();
   document.addEventListener('keydown', onSheetKey);
+}
+
+/** Close the modal, then reuse the existing submit-confirmation flow. */
+function finishFromSheet() {
+  closeSheet();
+  confirmSubmit();
 }
 
 function closeSheet() {
