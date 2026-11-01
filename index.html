@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mock Exam · AWS CCP Practice</title>
+<meta name="description" content="Practice for the AWS Certified Cloud Practitioner exam. 1,142 questions, works offline, scores stored on your device only.">
+<meta name="theme-color" content="#ff9900">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="stylesheet" href="style.css">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CCP Practice">
+</head>
+<body data-page="home">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot"></span>AWS CCP Practice</a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html" aria-current="page">Mock</a>
+      <a href="sets.html">Sets</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app">
+  <p class="lede">Loading the question bank…</p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>
+      Questions from
+      <a href="https://github.com/kananinirav/AWS-Certified-Cloud-Practitioner-Notes" target="_blank" rel="noopener noreferrer">kananinirav/AWS-Certified-Cloud-Practitioner-Notes</a>
+      (MIT licensed).
+    </p>
+    <p>Not affiliated with, endorsed by, or authorised by Amazon. AWS and all AWS service names are trademarks of Amazon.com, Inc.</p>
+    <p>Scores are stored in this browser only. Clearing site data erases them.</p>
+    <p><button class="btn btn-ghost" type="button" id="export-btn" style="min-height:0;padding:.25rem 0">Export my progress</button></p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  document.getElementById('export-btn').addEventListener('click', () => {
+    const raw = localStorage.getItem('ccp:progress:v1') || '{}';
+    const blob = new Blob([raw], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'aws-ccp-progress.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+</script>
+</body>
+</html>

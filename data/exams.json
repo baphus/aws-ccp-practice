@@ -1,0 +1,210 @@
+{
+  "generatedAt": "2026-11-01T05:45:23.207Z",
+  "source": "https://github.com/kananinirav/AWS-Certified-Cloud-Practitioner-Notes/tree/master/practice-exam",
+  "sets": [
+    {
+      "set": 1,
+      "title": "Practice Exam 1",
+      "count": 50
+    },
+    {
+      "set": 2,
+      "title": "Practice Exam 2",
+      "count": 50
+    },
+    {
+      "set": 3,
+      "title": "Practice Exam 3",
+      "count": 50
+    },
+    {
+      "set": 4,
+      "title": "Practice Exam 4",
+      "count": 50
+    },
+    {
+      "set": 5,
+      "title": "Practice Exam 5",
+      "count": 50
+    },
+    {
+      "set": 6,
+      "title": "Practice Exam 6",
+      "count": 50
+    },
+    {
+      "set": 7,
+      "title": "Practice Exam 7",
+      "count": 50
+    },
+    {
+      "set": 8,
+      "title": "Practice Exam 8",
+      "count": 50
+    },
+    {
+      "set": 9,
+      "title": "Practice Exam 9",
+      "count": 50
+    },
+    {
+      "set": 10,
+      "title": "Practice Exam 10",
+      "count": 50
+    },
+    {
+      "set": 11,
+      "title": "Practice Exam 11",
+      "count": 50
+    },
+    {
+      "set": 12,
+      "title": "Practice Exam 12",
+      "count": 42
+    },
+    {
+      "set": 13,
+      "title": "Practice Exam 13",
+      "count": 50
+    },
+    {
+      "set": 14,
+      "title": "Practice Exam 14",
+      "count": 50
+    },
+    {
+      "set": 15,
+      "title": "Practice Exam 15",
+      "count": 50
+    },
+    {
+      "set": 16,
+      "title": "Practice Exam 16",
+      "count": 50
+    },
+    {
+      "set": 17,
+      "title": "Practice Exam 17",
+      "count": 50
+    },
+    {
+      "set": 18,
+      "title": "Practice Exam 18",
+      "count": 50
+    },
+    {
+      "set": 19,
+      "title": "Practice Exam 19",
+      "count": 50
+    },
+    {
+      "set": 20,
+      "title": "Practice Exam 20",
+      "count": 50
+    },
+    {
+      "set": 21,
+      "title": "Practice Exam 21",
+      "count": 50
+    },
+    {
+      "set": 22,
+      "title": "Practice Exam 22",
+      "count": 50
+    },
+    {
+      "set": 23,
+      "title": "Practice Exam 23",
+      "count": 50
+    }
+  ],
+  "totalQuestions": 1142,
+  "uniqueQuestions": 972,
+  "duplicates": {
+    "groups": 168,
+    "questions": 338,
+    "sample": [
+      [
+        "e2q18",
+        "e3q13"
+      ],
+      [
+        "e8q43",
+        "e14q34"
+      ],
+      [
+        "e8q44",
+        "e14q37"
+      ],
+      [
+        "e8q45",
+        "e19q32"
+      ],
+      [
+        "e8q46",
+        "e13q36"
+      ],
+      [
+        "e8q47",
+        "e14q08"
+      ],
+      [
+        "e8q48",
+        "e15q23"
+      ],
+      [
+        "e8q49",
+        "e13q28"
+      ],
+      [
+        "e8q50",
+        "e13q09"
+      ],
+      [
+        "e9q01",
+        "e15q14"
+      ],
+      [
+        "e9q02",
+        "e13q32"
+      ],
+      [
+        "e9q03",
+        "e14q04"
+      ],
+      [
+        "e9q04",
+        "e22q08"
+      ],
+      [
+        "e9q05",
+        "e12q29",
+        "e15q10"
+      ],
+      [
+        "e9q06",
+        "e15q27"
+      ],
+      [
+        "e9q08",
+        "e14q19"
+      ],
+      [
+        "e9q09",
+        "e13q22"
+      ],
+      [
+        "e9q10",
+        "e14q01"
+      ],
+      [
+        "e9q11",
+        "e15q35"
+      ],
+      [
+        "e9q13",
+        "e17q34"
+      ]
+    ]
+  }
+}

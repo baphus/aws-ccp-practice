@@ -1,0 +1,9 @@
+# Cached copies of the upstream Markdown (re-sync works offline)
+tools/.cache/
+
+# Local test output
+tools/*.log
+
+# OS noise
+.DS_Store
+Thumbs.db
