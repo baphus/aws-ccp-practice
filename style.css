@@ -3,18 +3,30 @@
 
    Built on the AWS Cloudscape design system visual foundation.
    https://cloudscape.design/foundation/visual-foundation/
-
-   Custom properties below mirror Cloudscape CTI token names
-   (Category > Type > Item > State), and their values are copied from the official
-   @cloudscape-design/design-tokens package (index-visual-refresh.json) rather than
-   eyeballed. Reference the variables below in component styles; never write raw
-   hex values inline.
-
-   We are not loading Cloudscape's React component library — this is vanilla DOM —
-   so the components here are custom, but they follow Cloudscape's visual specs:
-   pill buttons (radius 20px), 16px containers, 8px inputs, 14px Open Sans body,
-   blue primary actions, and strict light/dark parity.
    ========================================================================== */
+
+/* --- Open Sans (self-hosted) ------------------------------------------------
+   Cloudscape's typography token names 'Open Sans' first, so it is shipped with
+   the app rather than loaded from a third-party CDN: the PWA must render in the
+   intended typeface offline, and this avoids leaking visitor IPs to Google.
+
+   Variable font, latin subset (U+0000-00FF plus common punctuation), one file
+   serving both 400 and 700. font-display: swap means text paints immediately in
+   the fallback and swaps in when ready, so there is no invisible-text flash.
+
+   Path is relative so the GitHub Pages subpath and any future host work unchanged.
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url('assets/fonts/open-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 :root {
   color-scheme: light dark;

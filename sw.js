@@ -11,7 +11,7 @@
    To ship an update: bump VERSION, deploy. Old caches are purged on activate.
    ========================================================================== */
 
-const VERSION = '11';
+const VERSION = '12';
 
 const CACHE = `ccp-shell-v${VERSION}`;
 
@@ -27,6 +27,7 @@ const PRECACHE = [
   './assets/icon-192.png',
   './assets/icon-512.png',
   './assets/icon-512-maskable.png',
+  './assets/fonts/open-sans-latin.woff2',
   './data/questions.json',
   './data/exams.json',
 ];
